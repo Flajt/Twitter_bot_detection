@@ -15,11 +15,11 @@ class DFFP():
         Init the model
         """
         net=tfl.layers.input_data(shape=[None,])
-        net=tfl.layers.core.fully_connected(net,n_units=200)
-        net=tfl.layers.core.fully_connected(net,n_units=350)
-        net=tfl.layers.core.fully_connected(net,n_units=100)
-        net=tlf.layers.core.fully_connected(net,n_units=50)
-        net=tlf.layers.core.fully_connected(net,n_units=2)
+        net=tfl.layers.core.fully_connected(net,n_units=200,activation="relu")
+        net=tfl.layers.core.fully_connected(net,n_units=350,activation="relu")
+        net=tfl.layers.core.fully_connected(net,n_units=100,activation="relu")
+        net=tlf.layers.core.fully_connected(net,n_units=50,activation="relu")
+        net=tlf.layers.core.fully_connected(net,n_units=2,activation="softmax")
         net=tfl.layers.estimator.regression(net,learning_rate=self.learning_rate)
         model=tfl.models.DNN(net,checkpoint_path=self.checkpoint_path)
         if not load:
@@ -38,11 +38,14 @@ class DFFP():
         """
         model=self.__init_model()
         batch_n=0
+        t=time.time()
         for a,b in zip(x,y):
             print("Fitting singele batch... {0} from {1}".format(batch_n,len(x)))
             model.fit_batch(a,b)
             batch_n+=1
         model.save(model_path)
+        t2=time.time()
+        print("Time needed: {} min. ".format((t2-t)/60))
 
     def train(self,x,y):
         """
