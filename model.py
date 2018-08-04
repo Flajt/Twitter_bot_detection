@@ -19,7 +19,7 @@ class DFFP():
         net=tfl.layers.core.fully_connected(net,n_units=350,activation="relu")
         net=tfl.layers.core.fully_connected(net,n_units=100,activation="relu")
         net=tlf.layers.core.fully_connected(net,n_units=50,activation="relu")
-        net=tlf.layers.core.fully_connected(net,n_units=2,activation="softmax")
+        net=tlf.layers.core.fully_connected(net,n_units=1,activation="sigmoid")
         net=tfl.layers.estimator.regression(net,learning_rate=self.learning_rate)
         model=tfl.models.DNN(net,checkpoint_path=self.checkpoint_path)
         if not load:
@@ -47,7 +47,7 @@ class DFFP():
         t2=time.time()
         print("Time needed: {} min. ".format((t2-t)/60))
 
-    def train(self,x,y):
+    def train(self,x,y,n_e=10):
         """
         Train model
         Parameters:
@@ -55,7 +55,8 @@ class DFFP():
             y: target data
         """
         model=self.__init_model()
-        model.fit(x,y,validation_set=0.1)
+        model.fit(x,y,validation_set=0.1,n_epoch=n_e)
+        model.save(self.model_patH)
 
     def predict(self,x):
         """
@@ -65,3 +66,7 @@ class DFFP():
         """
         model=self.__init_model(True)
         return model.predict(x)
+
+    def evaluate(self,x,y):
+        model=self.__init_model(True)
+        model.evaluate(x,y)
