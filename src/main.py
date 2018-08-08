@@ -2,7 +2,7 @@ from helper import preprocess,word_encoder
 import model
 import pandas as pd
 import numpy as np
-import tflearn as tf
+
 
 p=preprocess.preprocess()
 c=word_encoder.encoder()
