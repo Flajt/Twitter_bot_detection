@@ -7,24 +7,27 @@ class DFFP():
     """
     def __init__(self,checkpoint_path, model_path):
         self.checkpoint_path=checkpoint_path
-        self.learning_rate=1e-5
+        self.learning_rate=1e-4
         self.model_path=model_path
 
     def __init_model(self,load=False):
         """
         Init the model
         """
-        net=tfl.layers.input_data(shape=[None,])
-        net=tfl.layers.core.fully_connected(net,n_units=200,activation="relu")
-        net=tfl.layers.core.fully_connected(net,n_units=350,activation="relu")
-        net=tfl.layers.core.fully_connected(net,n_units=100,activation="relu")
-        net=tlf.layers.core.fully_connected(net,n_units=50,activation="relu")
-        net=tlf.layers.core.fully_connected(net,n_units=1,activation="sigmoid")
-        net=tfl.layers.estimator.regression(net,learning_rate=self.learning_rate)
+        print("Init model...")
+        net=tfl.layers.input_data(shape=[None,14])#epoch 85 best one,55 is better
+        #net=tfl.layers.core.fully_connected(net,n_units=200,activation="tanh")
+        #net=tfl.layers.core.fully_connected(net,n_units=350,activation="tanh")
+        #net=tfl.layers.core.fully_connected(net,n_units=1000,activation="tanh")
+        net=tfl.layers.core.fully_connected(net,n_units=1000,activation="tanh")
+        net=tfl.layers.core.fully_connected(net,n_units=500,activation="relu")
+        net=tfl.layers.core.fully_connected(net,n_units=1,activation="sigmoid")
+        net=tfl.layers.estimator.regression(net,learning_rate=self.learning_rate,loss='mean_square',optimizer='rmsprop')#binary_crossentropy
         model=tfl.models.DNN(net,checkpoint_path=self.checkpoint_path)
         if not load:
             return model
-        if load:
+        elif load:
+            model.load(self.model_path)
             return model
         else:
             raise ValueError("Input has to be either True or False!")
@@ -56,9 +59,9 @@ class DFFP():
         """
         model=self.__init_model()
         model.fit(x,y,validation_set=0.1,n_epoch=n_e)
-        model.save(self.model_patH)
+        model.save(self.model_path)
 
-    def predict(self,x):
+    def _predict(self,x):
         """
         Predict new input
         Parameters:
@@ -69,4 +72,4 @@ class DFFP():
 
     def evaluate(self,x,y):
         model=self.__init_model(True)
-        model.evaluate(x,y)
+        return model.evaluate(x,y)
