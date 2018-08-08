@@ -17,6 +17,7 @@ Other Goals:
 - Create better api
 
 # Usage:
+0. Have a look at Notice.txt (It`s about the license!)
 1. run `pip install -r requirements.txt`
 2. run `api.py`
-3. Read the result, the nearer the number is to one the more confident is the net that     this is a bot.
+3. Read the result, the nearer the number is to one the more confident is the net that this is a bot.
