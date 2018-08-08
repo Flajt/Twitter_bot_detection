@@ -7,7 +7,7 @@ class DFFP():
     """
     def __init__(self,checkpoint_path, model_path):
         self.checkpoint_path=checkpoint_path
-        self.learning_rate=1e-4
+        self.learning_rate=1e-3#e-4
         self.model_path=model_path
 
     def __init_model(self,load=False):
@@ -17,10 +17,13 @@ class DFFP():
         print("Init model...")
         net=tfl.layers.input_data(shape=[None,14])#epoch 85 best one,55 is better
         #net=tfl.layers.core.fully_connected(net,n_units=200,activation="tanh")
+        #net=tfl.layers.dropout(net,0.56)
         #net=tfl.layers.core.fully_connected(net,n_units=350,activation="tanh")
         #net=tfl.layers.core.fully_connected(net,n_units=1000,activation="tanh")
-        net=tfl.layers.core.fully_connected(net,n_units=1000,activation="tanh")
-        net=tfl.layers.core.fully_connected(net,n_units=500,activation="relu")
+        #net=tfl.layers.dropout(net,0.56)
+        net=tfl.layers.core.fully_connected(net,n_units=1600,activation="relu")
+        #net=tfl.layers.core.fully_connected(net,n_units=500,activation="relu")
+        #net=tfl.layers.dropout(net,0.56)
         net=tfl.layers.core.fully_connected(net,n_units=1,activation="sigmoid")
         net=tfl.layers.estimator.regression(net,learning_rate=self.learning_rate,loss='mean_square',optimizer='rmsprop')#binary_crossentropy
         model=tfl.models.DNN(net,checkpoint_path=self.checkpoint_path)
