@@ -1,0 +1,6 @@
+This extends the LICENSE file.
+If you use any of this files (contained in these project), you agree that the license is valid for the whole project,
+even when nothing of the license is contained in any/every file.
+
+Aswell you will agree that if this extension is not valid in terms of law or any other term, 
+you have to inform me.

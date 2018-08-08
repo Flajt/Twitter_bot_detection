@@ -1,0 +1,2 @@
+model_checkpoint_path: "A:\\Github\\Twitter_bot_detection\\Models\\model5_withdropout.tfl"
+all_model_checkpoint_paths: "A:\\Github\\Twitter_bot_detection\\Models\\model5_withdropout.tfl"
